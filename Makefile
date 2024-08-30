@@ -27,7 +27,6 @@ CH_DIR = charts
 DIR = cloudnative-pg
 VERSION = ${TAG}
 PACKAGED_CHART = ${DIR}-${VERSION}.tgz
-ECR_DEFAULT_REGIONS = us-east-1
 
 # Push OCI package
 
@@ -49,7 +48,7 @@ push-oci-chart:
 	aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | helm3.14.0 registry login ${ECR_HOST} --username AWS --password-stdin --debug
 	@echo
 	@echo "=== package OCI chart ==="
-	helm3.14.0 package --dependency-update ${CH_DIR}/${DIR}/ --version ${VERSION}
+	helm3.14.0 package ${CH_DIR}/${DIR}/ --version ${VERSION}
 	@echo
 	@echo "=== create repository ==="
 	aws ecr describe-repositories --repository-names ${DIR} --no-cli-pager || aws ecr create-repository --repository-name ${DIR} --region $(AWS_DEFAULT_REGION) --no-cli-pager
