@@ -37,7 +37,7 @@ push-oci-chart:
 	aws ecr-public get-login-password --region us-east-1 | helm3.14.0 registry login  --username AWS --password-stdin public.ecr.aws
 	@echo
 	@echo "=== package OCI chart ==="
-	helm3.14.0 package ${CH_DIR}/${DIR}/ --version ${VERSION}
+	helm3.14.0 package --dependency-update ${CH_DIR}/${DIR}/ --version ${VERSION}
 	@echo
 	@echo "=== create repository ==="
 	aws ecr-public describe-images --repository-name ${DIR} --region us-east-1 || aws ecr-public create-repository --repository-name ${DIR} --region us-east-1
