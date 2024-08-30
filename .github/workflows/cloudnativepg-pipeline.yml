@@ -44,3 +44,4 @@ jobs:
         ECR_HOST: ${{ steps.login-ecr.outputs.registry }}
       run: | 
           make push-oci-chart
+          make push-chart
