@@ -42,5 +42,6 @@ jobs:
       env:
         TAG: ${{ github.ref_name }}
         ECR_HOST: ${{ steps.login-ecr.outputs.registry }}
-      run: | 
-          make push-oci-chart && make push-chart
+      run: |
+          make push-chart
+          make push-oci-chart

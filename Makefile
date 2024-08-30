@@ -32,31 +32,30 @@ ECR_DEFAULT_REGIONS = us-east-1
 # Push OCI package
 
 push-chart:
-	@echo
-	echo "=== login to registry ==="
-	aws ecr get-login-password --region $(ECR_REGION) | helm3.6.3 registry login $(ECR_HOST) --username $(ECR_USERNAME) --password-stdin --debug
+	@echo "=== Helm login ==="
+	aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | helm3.6.3 registry login ${ECR_HOST} --username AWS --password-stdin --debug
 	@echo "=== save chart ==="
-	helm3.6.3 chart save ${CH_DIR}/${DIR}/ $(ECR_HOST)/dataos-base-charts:${DIR}-${VERSION}
+	helm3.6.3 chart save ${CH_DIR}/${DIR}/ ${ECR_HOST}/dataos-base-charts:${DIR}-${VERSION}
 	@echo
 	@echo "=== push chart ==="
-	helm3.6.3 chart push $(ECR_HOST)/dataos-base-charts:${DIR}-${VERSION}
+	helm3.6.3 chart push ${ECR_HOST}/dataos-base-charts:${DIR}-${VERSION}
 	@echo
 	@echo "=== logout of registry ==="
-	helm3.6.3 registry logout $(ECR_HOST)
+	helm3.6.3 registry logout ${ECR_HOST}
 
 push-oci-chart:
 	@echo
 	echo "=== login to OCI registry ==="
-	aws ecr-public get-login-password --region us-east-1 | helm3.14.0 registry login  --username AWS --password-stdin public.ecr.aws
+	aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | helm3.14.0 registry login ${ECR_HOST} --username AWS --password-stdin --debug
 	@echo
 	@echo "=== package OCI chart ==="
 	helm3.14.0 package --dependency-update ${CH_DIR}/${DIR}/ --version ${VERSION}
 	@echo
 	@echo "=== create repository ==="
-	aws ecr-public describe-images --repository-name ${DIR} --region us-east-1 || aws ecr-public create-repository --repository-name ${DIR} --region us-east-1
+	aws ecr describe-repositories --repository-names ${DIR} --no-cli-pager || aws ecr create-repository --repository-name ${DIR} --region $(AWS_DEFAULT_REGION) --no-cli-pager
 	@echo
 	@echo "=== push OCI chart ==="
-	helm3.14.0 push ${PACKAGED_CHART} oci://public.ecr.aws/z2k6n2n9
+	helm3.14.0 push ${PACKAGED_CHART} oci://$(ECR_HOST)
 	@echo
 	@echo "=== logout of registry ==="
-	helm3.14.0 registry logout public.ecr.aws
+	helm3.14.0 registry logout $(ECR_HOST)
