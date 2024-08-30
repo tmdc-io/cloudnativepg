@@ -31,6 +31,19 @@ ECR_DEFAULT_REGIONS = us-east-1
 
 # Push OCI package
 
+push-chart:
+	@echo
+	echo "=== login to registry ==="
+	aws ecr get-login-password --region $(ECR_REGION) | helm3.6.3 registry login $(ECR_HOST) --username $(ECR_USERNAME) --password-stdin --debug
+	@echo "=== save chart ==="
+	helm3.6.3 chart save ${CH_DIR}/${DIR}/ $(ECR_HOST)/dataos-base-charts:${DIR}-${VERSION}
+	@echo
+	@echo "=== push chart ==="
+	helm3.6.3 chart push $(ECR_HOST)/dataos-base-charts:${DIR}-${VERSION}
+	@echo
+	@echo "=== logout of registry ==="
+	helm3.6.3 registry logout $(ECR_HOST)
+
 push-oci-chart:
 	@echo
 	echo "=== login to OCI registry ==="
