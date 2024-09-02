@@ -15,10 +15,8 @@ spec:
   instances: {{ .Values.cluster.instances }}
   imageName: {{ include "cluster.imageName" . }}
   imagePullPolicy: {{ .Values.cluster.imagePullPolicy }}
-  {{- with .Values.cluster.imagePullSecrets}}
   imagePullSecrets:
-    {{- . | toYaml | nindent 4 }}
-  {{- end }}
+  - name: {{ .Values.cluster.imagePullSecrets }}
   postgresUID: {{ .Values.cluster.postgresUID }}
   postgresGID: {{ .Values.cluster.postgresGID }}
   storage:
