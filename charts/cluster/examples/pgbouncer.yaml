@@ -1,8 +1,0 @@
-mode: standalone
-cluster:
-  instances: 1
-backups:
-  enabled: false
-pooler:
-  enabled: true
-  instances: 1
