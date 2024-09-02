@@ -65,14 +65,14 @@ push-oci-chart:
 	helm3.14.0 push ${OPERATOR_PACKAGED_CHART} oci://$(ECR_HOST)
 	@echo
 	@echo
-	@echo "=== package ${CLUSTER_DIR} OCI chart ==="
-	helm3.14.0 package ${CH_DIR}/${CLUSTER_DIR}/ --version ${VERSION}
-	@echo
-	@echo "=== create ${CLUSTER_DIR} repository ==="
-	aws ecr describe-repositories --repository-names ${CLUSTER_DIR} --no-cli-pager || aws ecr create-repository --repository-name ${CLUSTER_DIR} --region $(AWS_DEFAULT_REGION) --no-cli-pager
-	@echo
-	@echo "=== push ${CLUSTER_DIR} OCI chart ==="
-	helm3.14.0 push ${CLUSTER_PACKAGED_CHART} oci://$(ECR_HOST)
+	# @echo "=== package ${CLUSTER_DIR} OCI chart ==="
+	# helm3.14.0 package ${CH_DIR}/${CLUSTER_DIR}/ --version ${VERSION}
+	# @echo
+	# @echo "=== create ${CLUSTER_DIR} repository ==="
+	# aws ecr describe-repositories --repository-names ${CLUSTER_DIR} --no-cli-pager || aws ecr create-repository --repository-name ${CLUSTER_DIR} --region $(AWS_DEFAULT_REGION) --no-cli-pager
+	# @echo
+	# @echo "=== push ${CLUSTER_DIR} OCI chart ==="
+	# helm3.14.0 push ${CLUSTER_PACKAGED_CHART} oci://$(ECR_HOST)
 	@echo
 	@echo "=== logout of registry ==="
 	helm3.14.0 registry logout $(ECR_HOST)
