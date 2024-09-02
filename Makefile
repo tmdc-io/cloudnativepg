@@ -25,7 +25,7 @@ cluster-schema:
 
 CH_DIR = charts
 OPERATOR_DIR = cloudnative-pg
-CLUSTER_DIR = cluster
+CLUSTER_DIR = postgres
 VERSION = ${TAG}
 OPERATOR_PACKAGED_CHART = ${OPERATOR_DIR}-${VERSION}.tgz
 CLUSTER_PACKAGED_CHART = ${CLUSTER_DIR}-${VERSION}.tgz
