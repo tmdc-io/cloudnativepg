@@ -66,7 +66,7 @@ push-oci-chart:
 	@echo
 	@echo
 	@echo "=== package ${CLUSTER_DIR} OCI chart ==="
-	helm3.14.0 package ${CH_DIR}/postgres/ --version ${VERSION}
+	helm3.14.0 package ${CH_DIR}/${CLUSTER_DIR}/ --version ${VERSION}
 	@echo
 	@echo "=== create ${CLUSTER_DIR} repository ==="
 	aws ecr describe-repositories --repository-names ${CLUSTER_DIR} --no-cli-pager || aws ecr create-repository --repository-name ${CLUSTER_DIR} --region $(AWS_DEFAULT_REGION) --no-cli-pager
