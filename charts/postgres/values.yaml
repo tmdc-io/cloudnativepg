@@ -79,7 +79,8 @@ cluster:
   instances: 3
   imageName: ""
   imagePullPolicy: IfNotPresent
-  imagePullSecrets: []
+  imagePullSecrets:
+    name: dataos-container-registry
 
   storage:
     size: 8Gi

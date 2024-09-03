@@ -16,7 +16,7 @@ spec:
   imageName: {{ include "cluster.imageName" . }}
   imagePullPolicy: {{ .Values.cluster.imagePullPolicy }}
   imagePullSecrets:
-  - name: {{ .Values.cluster.imagePullSecrets }}
+  - name: {{ .Values.cluster.imagePullSecrets.name }}
   postgresUID: {{ .Values.cluster.postgresUID }}
   postgresGID: {{ .Values.cluster.postgresGID }}
   storage:
