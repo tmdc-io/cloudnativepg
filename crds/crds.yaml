@@ -373,6 +373,7 @@ spec:
       type: string
     - jsonPath: .status.currentPrimary
       name: Primary
+      type: string
     name: v1
     schema:
       openAPIV3Schema:
