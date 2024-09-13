@@ -3380,7 +3380,6 @@ spec:
         specReplicasPath: .spec.instances
         statusReplicasPath: .status.instances
       status: {}
-
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -3405,7 +3404,6 @@ spec:
     name: v1
     schema:
       openAPIV3Schema:
-        description: ImageCatalog is the Schema for the imagecatalogs API
         properties:
           apiVersion:
             type: string
@@ -3416,16 +3414,11 @@ spec:
           spec:
             properties:
               images:
-                description: List of CatalogImages available in the catalog
                 items:
-                  description: CatalogImage defines the image and major version
                   properties:
                     image:
-                      description: The image reference
                       type: string
                     major:
-                      description: The PostgreSQL major version of the image. Must
-                        be unique within the catalog.
                       minimum: 10
                       type: integer
                   required:
