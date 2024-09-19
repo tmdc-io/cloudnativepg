@@ -9,7 +9,7 @@ keywords:
 maintainers:
 - email: itay+cloudnativepg-charts+github.com@grudev.com
   name: itay-grudev
-name: cluster
+name: postgres
 sources:
 - https://github.com/cloudnative-pg/charts
 type: application
