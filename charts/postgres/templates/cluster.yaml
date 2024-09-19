@@ -21,12 +21,7 @@ spec:
   postgresGID: {{ .Values.cluster.postgresGID }}
   storage:
     size: {{ .Values.cluster.storage.size }}
-    storageClass: {{ .Values.cluster.storage.storageClass }}
-{{- if .Values.cluster.walStorage }}
-  walStorage:
-    size: {{ .Values.cluster.walStorage.size }}
-    storageClass: {{ .Values.cluster.walStorage.storageClass }}
-{{- end }}  
+    storageClass: {{ .Values.cluster.storage.storageClass }} 
   {{- with .Values.cluster.resources }}
   resources:
     {{- toYaml . | nindent 4 }}
@@ -44,7 +39,7 @@ spec:
     {{- toYaml . | nindent 4 }}
   {{ end }}
   enableSuperuserAccess: {{ .Values.cluster.enableSuperuserAccess }}
-  {{- if not .Values.cluster.enableSuperuserAccess }}
+  {{- if .Values.cluster.enableSuperuserAccess }}
   superuserSecret:
     name: {{ .Values.cluster.superuserSecret.name }}
   {{- end}}
