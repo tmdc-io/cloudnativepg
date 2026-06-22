@@ -606,6 +606,16 @@ replica:
         name: ""
         key: ""
 
+# -- Optional explicit passwords for roles defined under `cluster.roles` that set
+# a `passwordSecret.name`. The key is the role name and the value is the password.
+# Leave empty (`{}`) to auto-generate a strong random password per role on first
+# install (preserved across upgrades). Only set a value when an application needs
+# a known password. These values are used solely to build the basic-auth secrets
+# and are never passed to the CNPG Cluster spec.
+rolePasswords: {}
+  # vestauser: "change-me"
+  # systemhealthuser: "change-me"
+
 # -- Database management configuration.
 databases: []
  # - name: app                      # -- Name of the database to be created.
@@ -622,7 +632,7 @@ databases: []
  #    #   ensure: present           # -- Ensure the PostgreSQL schema is present or absent - defaults to "present".
  #   extensions: []                 # -- List of extensions to be created in the database.
  #    # - name: pg_search
- #    #   ensure: present           # -- Ensure the PostgreSQL extension is present or absent - defaults to "present".
+ #    #   ensure: present           # `-- Ensure the PostgreSQL extension is present or absent - defaults to "present".
  #    #   version: "0.15.21"        # -- Version of the extension to be installed, if not specified the latest version will be used.
  #    #   schema: ""                # -- Schema where the extension will be installed, if not specified the extensions or current default object creation schema will be used.
  #   isTemplate: false              # -- Maps to the IS_TEMPLATE parameter. If true, the database is considered a template for new databases.
