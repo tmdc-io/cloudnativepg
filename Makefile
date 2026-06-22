@@ -53,6 +53,9 @@ push-oci-chart: ## Package & push a chart to ECR. Usage: make push-oci-chart DIR
 	@test -n "$(NAME)" || (echo "ERROR: NAME is required. e.g. make push-oci-chart DIR=cloudnative-pg NAME=cloudnativepg-operator"; exit 1)
 	@$(MAKE) ecr-login
 	@echo
+	@echo "=== add chart dependency repositories ==="
+	helm3.16.4 repo add cnpg-grafana-dashboard https://cloudnative-pg.github.io/grafana-dashboards
+	@echo
 	@echo "=== build chart dependencies: $(DIR) ==="
 	helm3.16.4 dependency build $(CH_DIR)/$(DIR)/
 	@echo
