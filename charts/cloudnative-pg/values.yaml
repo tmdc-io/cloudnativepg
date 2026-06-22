@@ -29,7 +29,8 @@ image:
   tag: ""
 
 imagePullSecrets: []
-nameOverride: ""
+# Keeps generated resource names/selectors stable after the chart was renamed to cloudnativepg-operator.
+nameOverride: "cloudnative-pg"
 fullnameOverride: ""
 namespaceOverride: ""
 

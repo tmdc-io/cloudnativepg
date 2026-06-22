@@ -41,6 +41,42 @@ HELM_DOCS = $(LOCALBIN)/helm-docs
 helm-docs: ## Download helm-docs locally if necessary.
 	$(call go-install-tool,$(HELM_DOCS),github.com/norwoodj/helm-docs/cmd/helm-docs@$(HELM_DOCS_VERSION))
 
+##@ OCI / ECR
+
+CH_DIR             ?= charts
+AWS_DEFAULT_REGION ?= $(AWS_ECR_REGION)
+VERSION            ?= $(TAG)
+
+.PHONY: push-oci-chart
+push-oci-chart: ## Package & push a chart to ECR. Usage: make push-oci-chart DIR=cloudnative-pg NAME=cloudnativepg-operator
+	@test -n "$(DIR)"  || (echo "ERROR: DIR is required.  e.g. make push-oci-chart DIR=cloudnative-pg NAME=cloudnativepg-operator"; exit 1)
+	@test -n "$(NAME)" || (echo "ERROR: NAME is required. e.g. make push-oci-chart DIR=cloudnative-pg NAME=cloudnativepg-operator"; exit 1)
+	@$(MAKE) ecr-login
+	@echo
+	@echo "=== build chart dependencies: $(DIR) ==="
+	helm3.16.4 dependency build $(CH_DIR)/$(DIR)/
+	@echo
+	@echo "=== package OCI chart: $(DIR) ==="
+	helm3.16.4 package $(CH_DIR)/$(DIR)/ --version $(VERSION)
+	@echo
+	@echo "=== create repository: $(NAME) ==="
+	aws ecr describe-repositories --repository-names $(NAME) --no-cli-pager 2>/dev/null || \
+		aws ecr create-repository --repository-name $(NAME) --region $(AWS_DEFAULT_REGION) --no-cli-pager
+	@echo
+	@echo "=== push OCI chart: $(NAME) ==="
+	helm3.16.4 push $(NAME)-$(VERSION).tgz oci://$(ECR_HOST)
+	@$(MAKE) ecr-logout
+
+.PHONY: ecr-login
+ecr-login: ## Log in to the ECR OCI registry
+	@echo "=== login to OCI registry ==="
+	aws ecr get-login-password --region $(AWS_DEFAULT_REGION) | helm3.16.4 registry login $(ECR_HOST) --username AWS --password-stdin --debug
+
+.PHONY: ecr-logout
+ecr-logout: ## Log out of the ECR OCI registry
+	@echo "=== logout of registry ==="
+	helm3.16.4 registry logout $(ECR_HOST)
+
 # go-install-tool will 'go install' any package $2 and install it to $1.
 define go-install-tool
 @[ -f $(1) ] || { \

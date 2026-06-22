@@ -1,5 +1,5 @@
 # -- Override the name of the chart
-nameOverride: ""
+nameOverride: "cluster"
 # -- Override the full name of the chart
 fullnameOverride: ""
 # -- Override the namespace of the chart
