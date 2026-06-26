@@ -48,7 +48,7 @@ AWS_DEFAULT_REGION ?= $(AWS_ECR_REGION)
 VERSION            ?= $(TAG)
 
 .PHONY: push-oci-chart
-push-oci-chart: ## Package & push a chart to ECR. Usage: make push-oci-chart DIR=cloudnative-pg NAME=cloudnativepg-operator [CHART=<Chart.yaml name, if it differs from NAME>]
+push-oci-chart: ## Package & push a chart to ECR. Usage: make push-oci-chart DIR=cloudnative-pg NAME=cloudnativepg-operator
 	@test -n "$(DIR)"  || (echo "ERROR: DIR is required.  e.g. make push-oci-chart DIR=cloudnative-pg NAME=cloudnativepg-operator"; exit 1)
 	@test -n "$(NAME)" || (echo "ERROR: NAME is required. e.g. make push-oci-chart DIR=cloudnative-pg NAME=cloudnativepg-operator"; exit 1)
 	@$(MAKE) ecr-login
@@ -67,7 +67,7 @@ push-oci-chart: ## Package & push a chart to ECR. Usage: make push-oci-chart DIR
 		aws ecr create-repository --repository-name $(NAME) --region $(AWS_DEFAULT_REGION) --no-cli-pager
 	@echo
 	@echo "=== push OCI chart: $(NAME) ==="
-	helm3.16.4 push $(or $(CHART),$(NAME))-$(VERSION).tgz oci://$(ECR_HOST)
+	helm3.16.4 push $(NAME)-$(VERSION).tgz oci://$(ECR_HOST)
 	@$(MAKE) ecr-logout
 
 .PHONY: ecr-login

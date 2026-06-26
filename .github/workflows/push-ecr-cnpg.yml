@@ -150,4 +150,4 @@ jobs:
         ECR_HOST: ${{ steps.login-ecr.outputs.registry }}
         AWS_DEFAULT_REGION: ${{ secrets.AWS_ECR_REGION }}
       run: |
-        make push-oci-chart DIR=plugin-barman-cloud NAME=cloudnativepg-plugin-barman-cloud CHART=plugin-barman-cloud
+        make push-oci-chart DIR=plugin-barman-cloud NAME=plugin-barman-cloud
