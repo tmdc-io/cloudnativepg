@@ -283,7 +283,18 @@ cluster:
   # When this option is disabled, the operator will ignore the SuperuserSecret content, delete it when automatically created,
   # and then blank the password of the postgres user by setting it to NULL.
   enableSuperuserAccess: true
+  # -- Name of the `kubernetes.io/basic-auth` secret holding the `postgres` superuser
+  # credentials. Leave empty to let the operator auto-generate one (named
+  # `<cluster-fullname>-superuser`). When `createSuperuserSecret` is enabled the chart
+  # creates a secret with this name instead of referencing a pre-existing one.
   superuserSecret: ""
+  # -- When true, the chart creates the `kubernetes.io/basic-auth` secret named by
+  # `superuserSecret` for the `postgres` superuser. Leave false (default) to reference a
+  # secret you manage yourself, or to let the operator auto-generate one. Requires
+  # `enableSuperuserAccess: true` and a non-empty `superuserSecret`. The password is taken
+  # from the top-level `superuserPassword`, otherwise preserved from the existing secret,
+  # otherwise randomly generated on first install.
+  createSuperuserSecret: false
 
   # -- Allow to disable PDB, mainly useful for upgrade of single-instance clusters or development purposes
   # See: https://cloudnative-pg.io/documentation/current/kubernetes_upgrade/#pod-disruption-budgets
@@ -615,6 +626,13 @@ replica:
 rolePasswords: {}
   # vestauser: "change-me"
   # systemhealthuser: "change-me"
+
+# -- Optional explicit password for the `postgres` superuser, used only when
+# `cluster.createSuperuserSecret` is enabled. Leave empty (`""`) to preserve the password
+# from the existing secret across upgrades, or to generate a strong random password on
+# first install. This value is used solely to build the basic-auth secret and is never
+# passed to the CNPG Cluster spec.
+superuserPassword: ""
 
 # -- Database management configuration.
 databases: []

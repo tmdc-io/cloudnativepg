@@ -276,6 +276,11 @@
           "required": [],
           "type": "object"
         },
+        "createSuperuserSecret": {
+          "default": false,
+          "description": "When true, the chart creates the `kubernetes.io/basic-auth` secret named by `superuserSecret` for the `postgres` superuser. Leave false (default) to reference a secret you manage yourself, or to let the operator auto-generate one. Requires `enableSuperuserAccess: true` and a non-empty `superuserSecret`. The password is taken from the top-level `superuserPassword`, otherwise preserved from the existing secret, otherwise randomly generated on first install.",
+          "type": "boolean"
+        },
         "enablePDB": {
           "default": true,
           "description": "Allow to disable PDB, mainly useful for upgrade of single-instance clusters or development purposes\nSee: https://cloudnative-pg.io/documentation/current/kubernetes_upgrade/#pod-disruption-budgets",
@@ -563,6 +568,7 @@
         },
         "superuserSecret": {
           "default": "",
+          "description": "Name of the `kubernetes.io/basic-auth` secret holding the `postgres` superuser credentials. Leave empty to let the operator auto-generate one (named `<cluster-fullname>-superuser`). When `createSuperuserSecret` is enabled the chart creates a secret with this name instead of referencing a pre-existing one.",
           "type": "string"
         },
         "walStorage": {
