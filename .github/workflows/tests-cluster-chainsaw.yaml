@@ -14,7 +14,7 @@ jobs:
       tests: ${{ steps.listTests.outputs.tests }}
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 1
       - id: listTests
@@ -29,7 +29,7 @@ jobs:
     name: ${{matrix.test}}
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
@@ -41,6 +41,15 @@ jobs:
 
       - name: Deploy the operator
         uses: ./.github/actions/deploy-operator
+
+      - name: Install cert-manager
+        uses: ./.github/actions/deploy-cert-manager
+
+      - name: Install Barman CNPG-I plugin
+        run: |
+          helm upgrade --install plugin-barman-cloud \
+            --namespace cnpg-system \
+            ./charts/plugin-barman-cloud
 
       - name: Install Prometheus CRDs
         run: |
